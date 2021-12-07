@@ -1,0 +1,7 @@
+name: Talent Academy Demo
+on: [ push ]    # List on one line
+jobs:
+  terraform-deployment:
+    runs-on: ubuntu-latest
+    steps: # list on multiple lines
+      - run: echo "This is my first step"
