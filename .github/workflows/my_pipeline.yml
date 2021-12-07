@@ -3,5 +3,25 @@ on: [ push ]    # List on one line
 jobs:
   terraform-deployment:
     runs-on: ubuntu-latest
-    steps: # list on multiple lines
-      - run: echo "This is my first step"
+    steps: # The list of steps to take for execution
+      - name: Authenticate with AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Clone your code in the pipeline
+        uses: actions/checkout@v2
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Init
+        id: init
+        run: terraform init
+
+      - name: Plan
+        id: plan
+        run: terraform plan
+        continue-on-error: true
